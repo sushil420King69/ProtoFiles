@@ -1,0 +1,255 @@
+syntax = "proto3";
+
+import "PFType/PFType.proto";
+import "PacketGroup/PacketGroup.proto";
+import "DataIntegrityRx/DataIntegrityRx.proto";
+import "RxAutoInstrumentation/RxAutoInstrumentation.proto";
+import "RateMonitoring/RateMonitoring.proto";
+
+package Port;
+
+option go_package = "Port";
+message PfcPriorityQueueType {
+	bool enable = 1 ;
+	PfcPriorityQueueChannelSet queue = 2 ;
+}
+
+message PfcPriorityQueueMapType {
+	PfcPriorityQueueType priority0 = 1 ;
+	PfcPriorityQueueType priority1 = 2 ;
+	PfcPriorityQueueType priority2 = 3 ;
+	PfcPriorityQueueType priority3 = 4 ;
+	PfcPriorityQueueType priority4 = 5 ;
+	PfcPriorityQueueType priority5 = 6 ;
+	PfcPriorityQueueType priority6 = 7 ;
+	PfcPriorityQueueType priority7 = 8 ;
+}
+
+message BasicConfigurationType {
+	eLoopback loopback = 1 ;
+	ePortMode portMode = 2 ;
+	bool enableSimulateCableDisconnect = 3 ;
+	bool enableTransparentDynamicRateChange = 4 ;
+	bool intrinsicLatencyAdjustment = 5 ;
+	eInstrumentationMode instrumentationMode = 6 ;
+}
+
+message TxLaneType {
+	string physicalLane = 1 ;
+	int32 pcsLane = 2 ;
+	PFType.PicoSecondsType laneSkew = 3 ;
+}
+
+message TxLaneMappingType {
+	TxLaneList mapping = 1 ;
+}
+
+message TxLaneConfigurationType {
+	TxLaneMappingType txLaneMapping = 1 ;
+}
+
+message TransmitConfigurationType {
+	eTxMode transmitMode = 1 ;
+	bool enableRepeatableLastRandomPattern = 2 ;
+	PFType.PartsPerMillionType transmitClockDeviation = 3 ;
+	eTxClockMode transmitClockMode = 4 ;
+	PFType.PercentType preEmphasis = 5 ;
+	bool ignoreLinkStatus = 6 ;
+}
+
+message ReceiveConfigurationType {
+	RxModeSet rxMode = 1 ;
+	bool enableAutoDetectInstrumentation = 2 ;
+	bool enableTxRxSync = 3 ;
+	PFType.MilliSecondsType txRxSyncInterval = 4 ;
+	PacketGroup.ConfigurationType packetGroupConfiguration = 5 ;
+	DataIntegrityRx.ConfigurationType dataIntegrityRxConfiguration = 6 ;
+	RxAutoInstrumentation.ConfigurationType rxAutoInstrumentation = 7 ;
+	RateMonitoring.RateMonitoringList rateMonitoringConfiguration = 8 ;
+}
+
+message PauseConfigurationType {
+	eFlowControl flowControl = 1 ;
+	PFType.MacAddressType directedAddress = 2 ;
+	PFType.MacAddressType multicastPauseAddress = 3 ;
+}
+
+message EthernetConfigurationType {
+	bool advertise1000FullDuplex = 1 ;
+	eAdvertiseAbilities advertiseAbilities = 2 ;
+	eRxTxMode rxTxMode = 3 ;
+	eMasterSlave masterSlave = 4 ;
+	bool masterSlaveTimeoutEnable = 5 ;
+	ePmaClock pmaClock = 6 ;
+	bool enableManualAutoNegotiate = 7 ;
+	bool enablePhyPolling = 8 ;
+}
+
+message DataCenterConfigurationType {
+	eDataCenterMode dataCenterMode = 1 ;
+}
+
+message PfcConfigurationType {
+	PfcPriorityQueueMapType priorityQueueMap = 1 ;
+	int32 responseDelayQuanta = 2 ;
+}
+
+message PortConfigurationType {
+	BasicConfigurationType basicConfiguration = 1 ;
+	TransmitConfigurationType transmitConfiguration = 2 ;
+	ReceiveConfigurationType receiveConfiguration = 3 ;
+	PauseConfigurationType pauseConfiguration = 4 ;
+	EthernetConfigurationType ethernetConfiguration = 5 ;
+	DataCenterConfigurationType dataCenterConfiguration = 6 ;
+	PfcConfigurationType pfcConfiguration = 7 ;
+	TxLaneConfigurationType txLaneConfiguration = 8 ;
+}
+
+message PortConfigurationStreamsType {
+	eTxMode transmitMode = 1 ;
+	bool enableRepeatableLastRandomPattern = 2 ;
+	eInstrumentationMode instrumentationMode = 3 ;
+	DataCenterConfigurationType dataCenterConfiguration = 4 ;
+	int64 lineSpeed = 5 ;
+}
+
+message PCPUFiltersConfigurationType {
+	ePCPUFilterControl pcpuFilterBlock = 1 ;
+	ePCPUFilterControl allFilters = 2 ;
+	ePCPUFilterControl dropAIS = 3 ;
+}
+
+message TxRxSyncIntervalConfigurationType {
+	bool enableTxRxSync = 1 ;
+	PFType.MilliSecondsType txRxSyncInterval = 2 ;
+}
+
+message eLoopback {
+	enum Enum {
+		kNormal = 0 ;
+ 		kLoopback = 1 ;
+ 		kLineLoopback = 2 ;
+ 	}
+}
+
+message eDataCenterMode {
+	enum Enum {
+		kNoMapping = 0 ;
+ 		kTwoPriorityMapping = 2 ;
+ 		kFourPriorityMapping = 4 ;
+ 		kEightPriorityMapping = 8 ;
+ 	}
+}
+
+message eAdvertiseAbilities {
+	enum Enum {
+		kNone = 0 ;
+ 		kSend = 1 ;
+ 		kSendAndReceive = 2 ;
+ 		kSendAndOrReceive = 3 ;
+ 	}
+}
+
+message eInstrumentationMode {
+	enum Enum {
+		kModeEndOfFrame = 0 ;
+ 		kModeFloating = 1 ;
+ 	}
+}
+
+message eDuplex {
+	enum Enum {
+		kHalf = 0 ;
+ 		kFull = 1 ;
+ 	}
+}
+
+message eFlowControl {
+	enum Enum {
+		kDisabled = 0 ;
+ 		kIEEE8023x = 1 ;
+ 		kIEEE8021Qbb = 2 ;
+ 	}
+}
+
+message eMasterSlave {
+	enum Enum {
+		kNegotiateEither = 0 ;
+ 		kNegotiatePortMaster = 1 ;
+ 		kNegotiatePortSlave = 2 ;
+ 	}
+}
+
+message ePmaClock {
+	enum Enum {
+		kAutoNegotiate = 0 ;
+ 		kMaster = 1 ;
+ 		kSlave = 2 ;
+ 	}
+}
+
+message ePortMode {
+	enum Enum {
+		kModeEthernet = 0 ;
+ 		kMode10GigWan = 1 ;
+ 		kMode10GigLan = 2 ;
+ 	}
+}
+
+message eRxMode {
+	enum Enum {
+		kCapture = 0 ;
+ 		kDataIntegrity = 1 ;
+ 		kFirstTimeStamp = 2 ;
+ 		kSequenceChecking = 3 ;
+ 		kWidePacketGroup = 4 ;
+ 		kPrbs = 5 ;
+ 		kRateMonitoring = 6 ;
+ 		kPerFlowErrorStats = 7 ;
+ 	}
+}
+
+message eRxTxMode {
+	enum Enum {
+		kGigNormal = 0 ;
+ 		kGigLoopback = 1 ;
+ 		kGigCableDisconnect = 2 ;
+ 	}
+}
+
+message eTxClockMode {
+	enum Enum {
+		kInternal = 0 ;
+ 		kExternal = 1 ;
+ 	}
+}
+
+message eTxMode {
+	enum Enum {
+		kPacketStreams = 0 ;
+ 		kPacketFlows = 1 ;
+ 		kAdvancedScheduler = 2 ;
+ 		kEcho = 3 ;
+ 	}
+}
+
+message ePCPUFilterControl {
+	enum Enum {
+		kEnable = 0 ;
+ 		kDisable = 1 ;
+ 		kNoAction = 2 ;
+ 	}
+}
+
+message RxModeSet {
+	repeated eRxMode RxModeSet = 1;
+}
+
+message PfcPriorityQueueChannelSet {
+	repeated int32 PfcPriorityQueueChannelSet = 1;
+}
+
+message TxLaneList {
+	repeated TxLaneType TxLaneList = 1;
+}
+

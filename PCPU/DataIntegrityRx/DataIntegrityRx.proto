@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+
+package DataIntegrityRx;
+
+option go_package = "DataIntegrityRx";
+message ConfigurationType {
+	bool enableTimeStamp = 1 ;
+	uint32 signature = 2 ;
+	int32 signatureOffset = 3 ;
+}
+

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+
+package RxAutoInstrumentation;
+
+option go_package = "RxAutoInstrumentation";
+message ConfigurationType {
+	int32 startScanOffset = 1 ;
+	uint32 signature = 2 ;
+	uint32 mask = 3 ;
+	uint32 misdirectedPacketMask = 4 ;
+	bool ignoreMisdirectedSignature = 5 ;
+}
+

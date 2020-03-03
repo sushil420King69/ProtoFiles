@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+
+package SplitPacketGroup;
+
+option go_package = "SplitPacketGroup";
+message ConfigurationType {
+	int32 groupIdOffset = 1 ;
+	eSplitPgidOffsetBaseTypes groupIdOffsetBaseType = 2 ;
+	int32 groupIdWidth = 3 ;
+	int32 groupIdMask = 4 ;
+}
+
+message eSplitPgidOffsetBaseTypes {
+	enum Enum {
+		kOffsetStartOfFrame = 0 ;
+ 		kOffsetFromSignature = 1 ;
+ 	}
+}
+

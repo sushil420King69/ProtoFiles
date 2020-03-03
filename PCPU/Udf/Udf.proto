@@ -1,0 +1,170 @@
+syntax = "proto3";
+
+import "IdType/IdType.proto";
+
+package Udf;
+
+option go_package = "Udf";
+message CounterSettingType {
+	int64 repeat = 1 ;
+	int64 initVal = 2 ;
+	int64 step = 3 ;
+	bool enableCascade = 4 ;
+	bool continuouslyCounting = 5 ;
+}
+
+message RandomSettingType {
+	int64 maskSelect = 1 ;
+	int64 maskVal = 2 ;
+	eRandomType randomType = 3 ;
+	int64 initRandomSeed = 4 ;
+	int64 startVal = 5 ;
+	int64 minVal = 6 ;
+	int64 maxVal = 7 ;
+}
+
+message NestedCounterSettingType {
+	int64 initVal = 1 ;
+	int64 valueRepetitions = 2 ;
+	int64 valueStep = 3 ;
+	int64 innerStep = 4 ;
+	int64 innerRepetitions = 5 ;
+	int64 outerStep = 6 ;
+	int64 outerRepetitions = 7 ;
+	bool continuouslyCounting = 8 ;
+}
+
+message IPv4SettingType {
+	int64 initVal = 1 ;
+	int64 repeatValue = 2 ;
+	int64 valueStep = 3 ;
+	int64 repeatLoop = 4 ;
+	int32 mask = 5 ;
+	bool continuouslyCounting = 6 ;
+	bool skipZerosAndOnes = 7 ;
+}
+
+message UdfValueListSettingType {
+	int32 length = 1 ;
+	int32 repeatCount = 2 ;
+	bool reuseVL = 3 ;
+	int32 sourceStreamId = 4 ;
+	int32 sourceUdfId = 5 ;
+	int32 startEntryOffset = 6 ;
+	int32 numEntries = 7 ;
+}
+
+message KillBitSettingType {
+	int32 length = 1 ;
+}
+
+message SkipValueSettingType {
+	bool enable = 1 ;
+	ListInt64 skipValueList = 2 ;
+}
+
+message SkipSynchronizationSettingType {
+	bool enable = 1 ;
+	IdType.UdfId syncMaster = 2 ;
+}
+
+message UdfType {
+	IdType.UdfId udfId = 1 ;
+	bool enable = 2 ;
+	IdType.UdfId chainFrom = 3 ;
+	int32 bitOffset = 4 ;
+	int32 udfSize = 5 ;
+	eCascadeType cascadeType = 6 ;
+	eCounterMode counterMode = 7 ;
+	CounterSettingType counterSetting = 8 ;
+	IPv4SettingType IPv4Setting = 9 ;
+	NestedCounterSettingType nestedCounterSetting = 10 ;
+	UdfValueListSettingType valueListSetting = 11 ;
+	RandomSettingType randomSetting = 12 ;
+	KillBitSettingType killBitSetting = 13 ;
+	bool enableIndexMode = 14 ;
+	SkipValueSettingType skipValueSetting = 15 ;
+	SkipSynchronizationSettingType skipSynchronizationSetting = 16 ;
+}
+
+message UdfMVDataType {
+	uint32 data = 1 ;
+	int32 offset = 2 ;
+}
+
+message SequenceUdfConfigurationType {
+	bool enable = 1 ;
+	int32 byteOffset = 2 ;
+	IdType.StreamGroupId associatedGroupId = 3 ;
+	IdType.UdfId associatedUdfId = 4 ;
+	int32 associatedUdfBitPosition = 5 ;
+	int32 associatedUdfWidth = 6 ;
+	int32 associatedUdfMin = 7 ;
+	int32 associatedUdfMax = 8 ;
+}
+
+message ValueListType {
+	IdType.UdfId udfId = 1 ;
+	UdfMVDataType values = 2 ;
+}
+
+message RangeListType {
+	IdType.UdfId udfId = 1 ;
+	UdfMVDataType initValues = 2 ;
+	UdfMVDataType repeatCountValues = 3 ;
+	UdfMVDataType stepValues = 4 ;
+}
+
+message KillBitListType {
+	IdType.UdfId udfId = 1 ;
+	UdfMVDataType killBits = 2 ;
+}
+
+message UdfConfigurationType {
+	UdfList udfList = 1 ;
+}
+
+message eCascadeType {
+	enum Enum {
+		kUdfCascadeNone = 0 ;
+ 		kUdfCascadeFromPrevious = 1 ;
+ 		kUdfCascadeFromSelf = 2 ;
+ 	}
+}
+
+message eCounterMode {
+	enum Enum {
+		kUdfCounterMode = 0 ;
+ 		kUdfRandomMode = 1 ;
+ 		kUdfValueListMode = 2 ;
+ 		kUdfNestedCounterMode = 3 ;
+ 		kUdfKillBitMode = 4 ;
+ 		kUdfIPv4Mode = 5 ;
+ 		kUdfRangeListMode = 6 ;
+ 	}
+}
+
+message eRandomType {
+	enum Enum {
+		kRandomNonRepeatable = 0 ;
+ 		kRandomRepeatableWithSeed = 1 ;
+ 		kRandomRepeatableWithStartVal = 2 ;
+ 	}
+}
+
+message ListInt64 {
+	repeated int64 ListInt64 = 1;
+}
+
+message UdfList {
+	repeated UdfType UdfList = 1;
+}
+
+message ValueList {
+	repeated ValueListType ValueList = 1;
+}
+
+message KillBitList {
+	repeated KillBitListType KillBitList = 1;
+}
+

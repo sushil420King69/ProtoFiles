@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+import "IdType/IdType.proto";
+import "SplitPacketGroup/SplitPacketGroup.proto";
+
+package PacketGroup;
+
+option go_package = "PacketGroup";
+message PGIDRange {
+	IdType.PacketGroupId start = 1 ;
+	IdType.PacketGroupId end = 2 ;
+}
+
+message SizeBinsType {
+	bool enableSizeBins = 1 ;
+	SizeBinList sizeBins = 2 ;
+}
+
+message ConfigurationType {
+	eDelayVariationMode delayVariationMode = 1 ;
+	bool enable128kBinMode = 2 ;
+	bool enableGroupIdMask = 3 ;
+	bool enableInsertPgid = 4 ;
+	bool enableLastBitTimeStamp = 5 ;
+	bool enableLatencyBins = 6 ;
+	bool enableReArmFirstTimeStamp = 7 ;
+	bool enableRxFilter = 8 ;
+	bool enableSignatureMask = 9 ;
+	int32 groupId = 10 ;
+	int32 groupIdMask = 11 ;
+	eGroupIdMode groupIdMode = 12 ;
+	int32 groupIdOffset = 13 ;
+	uint32 headerFilter = 14 ;
+	uint32 headerFilterMask = 15 ;
+	bool ignoreSignature = 16 ;
+	eTimeStampMode updateTimeStampMode = 17 ;
+	bool insertSequenceSignature = 18 ;
+	bool insertSignature = 19 ;
+	bool ieeePreambleMatch = 20 ;
+	LatencyBinList latencyBins = 21 ;
+	SizeBinsType sizeBinsRx = 22 ;
+	eLatencyControl latencyControl = 23 ;
+	eMeasurementMode measurementMode = 24 ;
+	int32 preambleSize = 25 ;
+	int32 seqAdvTrackingLateThreshold = 26 ;
+	int32 sequenceErrorThreshold = 27 ;
+	eSequenceCheckingMode sequenceCheckingMode = 28 ;
+	int32 sequenceNumberOffset = 29 ;
+	uint32 signature = 30 ;
+	uint32 signatureMask = 31 ;
+	int32 signatureOffset = 32 ;
+	SplitPacketGroupList splitPacketGroups = 33 ;
+	ePGIDStatMode pgidStatMode = 34 ;
+}
+
+message eDelayVariationMode {
+	enum Enum {
+		kDelayVariationWithSequenceErrors = 0 ;
+ 		kDelayVariationWithLatencyMinMax = 1 ;
+ 		kDelayVariationWithLatencyAvg = 2 ;
+ 	}
+}
+
+message eGroupIdMode {
+	enum Enum {
+		kPacketGroupCustom = 0 ;
+ 		kPacketGroupDscp = 1 ;
+ 		kPacketGroupIpV6TrafficClass = 2 ;
+ 		kPacketGroupMplsExp = 3 ;
+ 		kPacketGroupSplit = 4 ;
+ 	}
+}
+
+message eLatencyControl {
+	enum Enum {
+		kCutThrough = 0 ;
+ 		kStoreAndForward = 1 ;
+ 		kInterArrivalJitter = 3 ;
+ 		kFirstInLastOut = 4 ;
+ 		kLastInLastOut = 5 ;
+ 	}
+}
+
+message eMeasurementMode {
+	enum Enum {
+		kPacketGroupModeLatency = 0 ;
+ 		kPacketGroupModeInterArrivalTime = 1 ;
+ 		kPacketGroupModeDelayVariation = 2 ;
+ 	}
+}
+
+message eTimeStampMode {
+	enum Enum {
+		kTimeStampForEntirePGID = 0 ;
+ 		kUpdateTimeStampOnError = 1 ;
+ 	}
+}
+
+message eSequenceCheckingMode {
+	enum Enum {
+		kSeqThreshold = 0 ;
+ 		kSeqMultiSwitchedPath = 1 ;
+ 		kSeqAdvTracking = 2 ;
+ 	}
+}
+
+message ePGIDStatMode {
+	enum Enum {
+		k4KStatMode = 0 ;
+ 		k32KStatMode = 1 ;
+ 	}
+}
+
+message LatencyBinList {
+	repeated double LatencyBinList = 1;
+}
+
+message SizeBinList {
+	repeated int32 SizeBinList = 1;
+}
+
+message SplitPacketGroupList {
+	repeated SplitPacketGroup.ConfigurationType SplitPacketGroupList = 1;
+}
+
+message PGIDRangeList {
+	repeated PGIDRange PGIDRangeList = 1;
+}
+

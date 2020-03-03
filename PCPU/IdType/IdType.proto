@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+
+package IdType;
+
+option go_package = "IdType";
+message PortId {
+	int32 id = 1 ;
+}
+
+message CaptureRecordId {
+	int32 id = 1 ;
+}
+
+message CapturePatternId {
+	int32 id = 1 ;
+}
+
+message CaptureFilterId {
+	int32 id = 1 ;
+}
+
+message StreamId {
+	int32 id = 1 ;
+}
+
+message UdfId {
+	int32 id = 1 ;
+}
+
+message StreamGroupId {
+	int32 id = 1 ;
+}
+
+message PacketGroupId {
+	int32 id = 1 ;
+}
+
+message SlotId {
+	int32 id = 1 ;
+}
+
+message SecureChannelId {
+	int32 id = 1 ;
+}
+
+message KeyId {
+	int32 id = 1 ;
+}
+
+message PortIdList {
+	repeated PortId PortIdList = 1;
+}
+

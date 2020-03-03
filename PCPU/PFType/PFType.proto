@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+import "IdType/IdType.proto";
+
+package PFType;
+
+option go_package = "PFType";
+message FixedPoint16 {
+	int64 value = 1 ;
+}
+
+message MacAddressType {
+	int64 address = 1 ;
+}
+
+message PercentType {
+	int32 percent = 1 ;
+	int32 microPercent = 2 ;
+}
+
+message PartsPerMillionType {
+	int32 ppm = 1 ;
+	int32 microPpm = 2 ;
+}
+
+message MilliSecondsType {
+	int64 milliSeconds = 1 ;
+}
+
+message NanoSecondsType {
+	int64 nanoSeconds = 1 ;
+}
+
+message PicoSecondsType {
+	int64 picoSeconds = 1 ;
+}
+
+message KBType {
+	int32 kB = 1 ;
+}
+
+message ErrorType {
+	string text = 1 ;
+}
+
+message GapTimeType {
+	int64 duration = 1 ;
+	eGapUnit units = 2 ;
+}
+
+message GapPrecisionTimeType {
+	double duration = 1 ;
+	eGapUnit units = 2 ;
+}
+
+message ReleaseType {
+	int32 Major = 1 ;
+	int32 Minor = 2 ;
+}
+
+message RevisionType {
+	int32 Branch = 1 ;
+	int32 Build = 2 ;
+}
+
+message VersionType {
+	ReleaseType Release = 1 ;
+	RevisionType Revision = 2 ;
+}
+
+message OwnerType {
+	IdType.PortId Port = 1 ;
+	string Name = 2 ;
+}
+
+message UTCTime {
+	int64 Time = 1 ;
+}
+
+message eGapUnit {
+	enum Enum {
+		kGapNanoSeconds = 0 ;
+ 		kGapClockTicks = 1 ;
+ 		kGapBytes = 2 ;
+ 	}
+}
+
+message NanoSecondsList {
+	repeated NanoSecondsType NanoSecondsList = 1;
+}
+
+message OwnerList {
+	repeated OwnerType OwnerList = 1;
+}
+

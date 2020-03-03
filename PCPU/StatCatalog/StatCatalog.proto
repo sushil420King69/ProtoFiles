@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "IdType/IdType.proto";
+
+package StatCatalog;
+
+option go_package = "StatCatalog";
+message StHtgCatalogStat {
+	string name = 1 ;
+	string description = 2 ;
+	int32 statId = 3 ;
+	string statEnginePath = 4 ;
+	eValueType statValueType = 5 ;
+	eStatType statType = 6 ;
+	int32 indexMin = 7 ;
+	int32 indexMax = 8 ;
+	string modeList = 9 ;
+}
+
+message StHtgCatalogItem {
+	IdType.PortId portId = 1 ;
+	string sourceType = 2 ;
+	string description = 3 ;
+	int32 itemId = 4 ;
+	StHtgCatalogStatList statList = 5 ;
+}
+
+message eValueType {
+	enum Enum {
+		kCounter = 0 ;
+ 		kString = 1 ;
+ 		kPair = 2 ;
+ 	}
+}
+
+message eStatType {
+	enum Enum {
+		kDefault = 0 ;
+ 		kArray = 1 ;
+ 	}
+}
+
+message StHtgCatalogStatList {
+	repeated StHtgCatalogStat StHtgCatalogStatList = 1;
+}
+

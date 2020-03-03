@@ -1,0 +1,594 @@
+syntax = "proto3";
+
+import "IdType/IdType.proto";
+import "PFType/PFType.proto";
+import "Udf/Udf.proto";
+import "TableUdf/TableUdf.proto";
+import "PacketGroup/PacketGroup.proto";
+import "MacSec/MacSec.proto";
+
+package Stream;
+
+option go_package = "Stream";
+message TxDelayType {
+	int64 duration = 1 ;
+	double preciseDuration = 2 ;
+	eTxDelay units = 3 ;
+}
+
+message TsnQbvGateConfigType {
+	bool enabled = 1 ;
+	eTsnQbvGate qbvGate = 2 ;
+}
+
+message StreamControlType {
+	eDma dma = 1 ;
+	IdType.StreamId returnToId = 2 ;
+	int32 loopCount = 3 ;
+	int64 numBursts = 4 ;
+	int64 numFrames = 5 ;
+	ePriorityGroup priorityGroup = 6 ;
+	TsnQbvGateConfigType tsnQbvGateConfig = 7 ;
+	bool asyncIntEnable = 8 ;
+	eAdjustMask adjustMask = 9 ;
+	bool enableIncrFrameBurstOverride = 10 ;
+	bool enableSourceInterface = 11 ;
+	bool enableStatistic = 12 ;
+	bool enableSuspend = 13 ;
+	bool rxTriggerEnable = 14 ;
+	TxDelayType startTxDelay = 15 ;
+}
+
+message InterFrameGapControlType {
+	eIfgType ifgType = 1 ;
+	PFType.GapTimeType ifg = 2 ;
+	PFType.GapTimeType ifgMin = 3 ;
+	PFType.GapTimeType ifgMax = 4 ;
+	PFType.GapPrecisionTimeType ifgPrecise = 5 ;
+}
+
+message RateControlType {
+	eRateMode rateMode = 1 ;
+	PFType.PercentType percentPacketRate = 2 ;
+	double fpsRate = 3 ;
+	double bpsRate = 4 ;
+}
+
+message InterBurstGapControlType {
+	bool enableIbg = 1 ;
+	PFType.GapTimeType ibg = 2 ;
+	PFType.GapPrecisionTimeType ibgPrecise = 3 ;
+}
+
+message InterStreamGapControlType {
+	bool enableIsg = 1 ;
+	PFType.GapTimeType isg = 2 ;
+	PFType.GapPrecisionTimeType isgPrecise = 3 ;
+}
+
+message DstAddrControlType {
+	PFType.MacAddressType dstAddr = 1 ;
+	PFType.MacAddressType dstAddrMaskSelect = 2 ;
+	PFType.MacAddressType dstAddrMaskValue = 3 ;
+	eAddressRepeatCounter dstAddrRepeatCounter = 4 ;
+	int64 dstAddrStep = 5 ;
+	int64 numDstAddr = 6 ;
+	bool enableDstAddrContinueFromLastValue = 7 ;
+}
+
+message SrcAddrControlType {
+	PFType.MacAddressType srcAddr = 1 ;
+	PFType.MacAddressType srcAddrMaskSelect = 2 ;
+	PFType.MacAddressType srcAddrMaskValue = 3 ;
+	eAddressRepeatCounter srcAddrRepeatCounter = 4 ;
+	int64 srcAddrStep = 5 ;
+	int64 numSrcAddr = 6 ;
+	bool enableSrcContinueFromLastValue = 7 ;
+}
+
+message QuadGaussianFractionalDataType {
+	int64 mInteger = 1 ;
+	int32 mFractional = 2 ;
+}
+
+message QuadGaussianPacketDataType {
+	QuadGaussianFractionalDataType lengthWeight = 1 ;
+	QuadGaussianFractionalDataType lengthWidth = 2 ;
+	QuadGaussianFractionalDataType lengthCenter = 3 ;
+}
+
+message QuadGaussianControlType {
+	QuadGaussianPacketDataType firstGaussian = 1 ;
+	QuadGaussianPacketDataType secondGaussian = 2 ;
+	QuadGaussianPacketDataType thirdGaussian = 3 ;
+	QuadGaussianPacketDataType fourthGaussian = 4 ;
+}
+
+message RandomQuadGaussianControlType {
+	QuadGaussianDataList quadgaussian = 1 ;
+}
+
+message WeightedPairDataType {
+	int32 lengthWeight = 1 ;
+	int32 lengthSizeMin = 2 ;
+	int32 lengthSizeMax = 3 ;
+}
+
+message RandomWeightedPairControlType {
+	WeightedPairDataList weightedpair = 1 ;
+	int32 sourceStreamId = 2 ;
+}
+
+message RandomSizeControlType {
+	eRandomSizeType randomSizeType = 1 ;
+	RandomQuadGaussianControlType randomQuadGaussianControl = 2 ;
+	RandomWeightedPairControlType randomWeightedPairControl = 3 ;
+}
+
+message FramePreemptionType {
+	eSMDType smdType = 1 ;
+	eFragCount fragCount = 2 ;
+	eCRCType crcType = 3 ;
+}
+
+message FrameControlType {
+	FramePreemptionType framePreemptionType = 1 ;
+	eFrameSizeType frameSizeType = 2 ;
+	int32 frameType = 3 ;
+	PFType.FixedPoint16 averageFrameSize = 4 ;
+	int32 frameSize = 5 ;
+	int32 frameSizeStep = 6 ;
+	int32 frameSizeCount = 7 ;
+	int32 frameSizeMax = 8 ;
+	int32 frameSizeMin = 9 ;
+	int64 enforceMinGap = 10 ;
+	uint32 preambleData = 11 ;
+	ePatternType patternType = 12 ;
+	eFcsError fcsError = 13 ;
+	bool enableTimestamp = 14 ;
+	RandomSizeControlType randomSizeControlType = 15 ;
+}
+
+message BackgroundOverlayType {
+	int32 offset = 1 ;
+	uint32 overlayData = 2 ;
+}
+
+message BackgroundDataControlType {
+	int32 size = 1 ;
+	BackgroundOverlayList backgroundOverlay = 2 ;
+}
+
+message PseudoHeaderField {
+	ePseudoHeaderFieldType mode = 1 ;
+	int32 offset = 2 ;
+	int32 length = 3 ;
+	uint32 pseudoValue = 4 ;
+}
+
+message ChecksumDataType {
+	eChecksumType checksumType = 1 ;
+	int32 checksumOffset = 2 ;
+	int32 dataOffset = 3 ;
+	int32 dataLength = 4 ;
+	eChecksumError checksumError = 5 ;
+	bool includePayload = 6 ;
+	bool isPseudoHeader = 7 ;
+	bool isUdpMode = 8 ;
+	PseudoHeaderFieldList pseudoHeaderInfo = 9 ;
+}
+
+message LengthInsertionType {
+	int32 value = 1 ;
+	int32 offset = 2 ;
+}
+
+message ProtocolHeaderInfoType {
+	string name = 1 ;
+	string description = 2 ;
+	int32 start = 3 ;
+	int32 length = 4 ;
+	bool hasChecksum = 5 ;
+	bool hasLengthInsertion = 6 ;
+	ChecksumDataType checksumData = 7 ;
+	LengthInsertionType lengthInsertion = 8 ;
+	bool hasIpType = 9 ;
+	int32 ipType = 10 ;
+}
+
+message SpecialProtocolInfoType {
+	bool enableIsl = 1 ;
+	bool enableDataMangling = 2 ;
+	bool enableFcoe = 3 ;
+	bool forceValidFCoESize = 4 ;
+	bool enableVntag = 5 ;
+	int32 fcoeEOF = 6 ;
+	int32 fcoeReserved1 = 7 ;
+	int32 fcoeReserved2 = 8 ;
+	int32 fcoeReserved3 = 9 ;
+}
+
+message ProtocolHeaderInfoListType {
+	SpecialProtocolInfoType specialProtocolInfo = 1 ;
+	ProtocolHeaderInfoList protocolHeader = 2 ;
+}
+
+message DataIntegrityTxType {
+	bool enable = 1 ;
+	bool insertSignature = 2 ;
+	uint32 signature = 3 ;
+	int32 signatureOffset = 4 ;
+	eDataIntegrityMode dataIntegrityMode = 5 ;
+	int32 numBytesFromEndOfFrame = 6 ;
+	int32 payloadLength = 7 ;
+}
+
+message AutodetectSignatureTxType {
+	bool insertSignature = 1 ;
+	uint32 signature = 2 ;
+	int32 signatureOffset = 3 ;
+}
+
+message BackgroundDataType {
+	uint32 protocol = 1 ;
+	uint32 pattern = 2 ;
+}
+
+message BackgroundDataSettingType {
+	IdType.StreamId streamId = 1 ;
+	BackgroundDataType backgroundData = 2 ;
+}
+
+message StreamValueListSettingType {
+	IdType.StreamId streamId = 1 ;
+	Udf.ValueList valueList = 2 ;
+}
+
+message StreamRangeListSettingType {
+	IdType.StreamId streamId = 1 ;
+	Udf.RangeListType rangeList = 2 ;
+}
+
+message KillBitListSettingType {
+	IdType.StreamId streamId = 1 ;
+	Udf.KillBitList killBitList = 2 ;
+}
+
+message ConfigurationDataType {
+	StreamControlType streamControl = 1 ;
+	InterFrameGapControlType interFrameGapControl = 2 ;
+	RateControlType rateControl = 3 ;
+	InterBurstGapControlType interBurstGapControl = 4 ;
+	InterStreamGapControlType interStreamGapControl = 5 ;
+	DstAddrControlType dstAddrControl = 6 ;
+	SrcAddrControlType srcAddrControl = 7 ;
+	FrameControlType frameControl = 8 ;
+	BackgroundDataControlType bgndDataControl = 9 ;
+	ProtocolHeaderInfoListType protocolHeaders = 10 ;
+	Udf.UdfConfigurationType udfConfiguration = 11 ;
+	TableUdf.TableUdfConfigurationType tableUdfConfiguration = 12 ;
+	Udf.SequenceUdfConfigurationType sequenceUdfConfiguration = 13 ;
+	DataIntegrityTxType dataIntegrityTx = 14 ;
+	AutodetectSignatureTxType autodetectSignatureTx = 15 ;
+	PacketGroup.SizeBinsType sizeBinsTx = 16 ;
+	MacSec.MacSecStreamControlType macSec = 17 ;
+}
+
+message ConfigurationUpdateDataType {
+	bool isSetStreamControl = 1 ;
+	bool isSetRateControl = 2 ;
+	bool isSetFrameControl = 3 ;
+	bool isSetInterBurstGapControl = 4 ;
+	bool isSetInterStreamGapControl = 5 ;
+	bool isFrameSizeIncreasing = 6 ;
+	bool isSuspendingStream = 7 ;
+	bool isSetMacSec = 8 ;
+	ConfigurationDataType data = 9 ;
+}
+
+message StreamConfigurationType {
+	IdType.StreamId streamId = 1 ;
+	string name = 2 ;
+	eState state = 3 ;
+	ConfigurationDataType configurationData = 4 ;
+}
+
+message StreamUpdateConfigurationType {
+	IdType.StreamId streamId = 1 ;
+	ConfigurationUpdateDataType configurationData = 2 ;
+}
+
+message BackgroundDataConfigurationType {
+	BackgroundDataSettingList setting = 1 ;
+}
+
+message ValueListConfigurationType {
+	StreamValueListSettingList setting = 1 ;
+}
+
+message RangeListConfigurationType {
+	StreamRangeListSettingList setting = 1 ;
+}
+
+message KillBitListConfigurationType {
+	KillBitListSettingList setting = 1 ;
+}
+
+message StreamTableUdfDataType {
+	IdType.StreamId streamId = 1 ;
+	TableUdf.ColumnMVDataList columns = 2 ;
+	int32 rowOffset = 3 ;
+	bool isComplete = 4 ;
+}
+
+message TrafficConfigurationType {
+	eGapControlMode gapControlMode = 1 ;
+	StreamConfigurationList streams = 2 ;
+}
+
+message eState {
+	enum Enum {
+		kInactive = 0 ;
+ 		kActive = 1 ;
+ 	}
+}
+
+message eAdjustMask {
+	enum Enum {
+		kGapNone = 0 ;
+ 		kGapFrame = 1 ;
+ 		kGapBurst = 2 ;
+ 		kGapStream = 3 ;
+ 		kAdjustFrameSizeFixed = 4 ;
+ 		kAdjustFrameSizeMin = 5 ;
+ 		kAdjustFrameSizeMax = 6 ;
+ 		kAdjustNumFrames = 7 ;
+ 	}
+}
+
+message eAddressRepeatCounter {
+	enum Enum {
+		kIncrement = 0 ;
+ 		kContIncrement = 1 ;
+ 		kDecrement = 2 ;
+ 		kContDecrement = 3 ;
+ 		kIdle = 4 ;
+ 		kCtrRandom = 5 ;
+ 		kDstAddrArp = 6 ;
+ 		kContJitterTestPattern = 7 ;
+ 		kContRandomTestPattern = 8 ;
+ 	}
+}
+
+message eDma {
+	enum Enum {
+		kContPacket = 0 ;
+ 		kContBurst = 1 ;
+ 		kStopStream = 2 ;
+ 		kAdvance = 3 ;
+ 		kGotoFirst = 4 ;
+ 		kFirstLoopCount = 5 ;
+ 		kFixedBurstCount = 6 ;
+ 	}
+}
+
+message eFcsError {
+	enum Enum {
+		kStreamErrorGood = 0 ;
+ 		kStreamErrorAlignment = 1 ;
+ 		kStreamErrorDribble = 2 ;
+ 		kStreamErrorBadCRC = 3 ;
+ 		kStreamErrorNoCRC = 4 ;
+ 	}
+}
+
+message eFrameSizeType {
+	enum Enum {
+		kSizeFixed = 0 ;
+ 		kSizeRandom = 1 ;
+ 		kSizeIncr = 2 ;
+ 		kSizeAuto = 3 ;
+ 	}
+}
+
+message eRandomSizeType {
+	enum Enum {
+		kRandomSizeOff = 0 ;
+ 		kRandomSizeUniform = 1 ;
+ 		kRandomSizeWeightedPair = 2 ;
+ 		kRandomSizeQuadGuassian = 3 ;
+ 		kRandomSizeCisco = 4 ;
+ 		kRandomSizeImix = 5 ;
+ 		kRandomSizeTolly = 6 ;
+ 		kRandomSizeRprTriModal = 7 ;
+ 		kRandomSizeRprQuadModal = 8 ;
+ 	}
+}
+
+message eGapControlMode {
+	enum Enum {
+		kStreamGapControlFixed = 0 ;
+ 		kStreamGapControlAverage = 1 ;
+ 	}
+}
+
+message eIfgType {
+	enum Enum {
+		kGapFixed = 0 ;
+ 		kGapRandom = 1 ;
+ 	}
+}
+
+message ePatternType {
+	enum Enum {
+		kRandom = 0 ;
+ 		kIncrByte = 1 ;
+ 		kIncrWord = 2 ;
+ 		kDecrByte = 3 ;
+ 		kDecrWord = 4 ;
+ 		kPattern = 5 ;
+ 		kRepeatPattern = 6 ;
+ 	}
+}
+
+message ePriorityGroup {
+	enum Enum {
+		kPriorityGroup0 = 0 ;
+ 		kPriorityGroup1 = 1 ;
+ 		kPriorityGroup2 = 2 ;
+ 		kPriorityGroup3 = 3 ;
+ 		kPriorityGroup4 = 4 ;
+ 		kPriorityGroup5 = 5 ;
+ 		kPriorityGroup6 = 6 ;
+ 		kPriorityGroup7 = 7 ;
+ 		kPriorityGroup8 = 8 ;
+ 		kPriorityGroupControl = 9 ;
+ 	}
+}
+
+message eTsnQbvGate {
+	enum Enum {
+		kTsnQbvGate0 = 0 ;
+ 		kTsnQbvGate1 = 1 ;
+ 		kTsnQbvGate2 = 2 ;
+ 		kTsnQbvGate3 = 3 ;
+ 		kTsnQbvGate4 = 4 ;
+ 		kTsnQbvGate5 = 5 ;
+ 		kTsnQbvGate6 = 6 ;
+ 		kTsnQbvGate7 = 7 ;
+ 	}
+}
+
+message eRateMode {
+	enum Enum {
+		kStreamRateModeGap = 0 ;
+ 		kStreamRateModePercentRate = 1 ;
+ 		kStreamRateModeFps = 2 ;
+ 		kStreamRateModeBps = 3 ;
+ 	}
+}
+
+message eChecksumType {
+	enum Enum {
+		kEthernetFCS = 0 ;
+ 		kL23Checksum = 1 ;
+ 		kL4Checksum = 2 ;
+ 	}
+}
+
+message eChecksumError {
+	enum Enum {
+		kNoError = 0 ;
+ 		kBadChecksum = 1 ;
+ 	}
+}
+
+message eDataIntegrityMode {
+	enum Enum {
+		kAuto = 0 ;
+ 		kNumberOfBytesFromEndOfFrame = 1 ;
+ 		kPayloadLength = 2 ;
+ 	}
+}
+
+message eTxDelay {
+	enum Enum {
+		kNanoSeconds = 0 ;
+ 		kBytes = 1 ;
+ 		kTicks = 2 ;
+ 	}
+}
+
+message eSMDType {
+	enum Enum {
+		kExpress = 0 ;
+ 		kAutoSMD = 1 ;
+ 		kAutoSMDS = 2 ;
+ 		kAutoSMDC = 3 ;
+ 		kSMDS0 = 4 ;
+ 		kSMDS1 = 5 ;
+ 		kSMDS2 = 6 ;
+ 		kSMDS3 = 7 ;
+ 		kSMDC0 = 8 ;
+ 		kSMDC1 = 9 ;
+ 		kSMDC2 = 10 ;
+ 		kSMDC3 = 11 ;
+ 		kVerify = 12 ;
+ 		kRespond = 13 ;
+ 		kInvalid = 14 ;
+ 	}
+}
+
+message eFragCount {
+	enum Enum {
+		kFragCount0 = 0 ;
+ 		kFragCount1 = 1 ;
+ 		kFragCount2 = 2 ;
+ 		kFragCount3 = 3 ;
+ 		kFragCountAuto = 4 ;
+ 	}
+}
+
+message eCRCType {
+	enum Enum {
+		kmCRC = 0 ;
+ 		kFCS = 1 ;
+ 	}
+}
+
+message ePseudoHeaderFieldType {
+	enum Enum {
+		kFixed = 0 ;
+ 		kLengthInsertion = 1 ;
+ 		kPartOfBackgroundData = 2 ;
+ 	}
+}
+
+message QuadGaussianDataList {
+	repeated QuadGaussianControlType QuadGaussianDataList = 1;
+}
+
+message WeightedPairDataList {
+	repeated WeightedPairDataType WeightedPairDataList = 1;
+}
+
+message BackgroundOverlayList {
+	repeated BackgroundOverlayType BackgroundOverlayList = 1;
+}
+
+message PseudoHeaderFieldList {
+	repeated PseudoHeaderField PseudoHeaderFieldList = 1;
+}
+
+message ProtocolHeaderInfoList {
+	repeated ProtocolHeaderInfoType ProtocolHeaderInfoList = 1;
+}
+
+message BackgroundDataSettingList {
+	repeated BackgroundDataSettingType BackgroundDataSettingList = 1;
+}
+
+message StreamRangeListSettingList {
+	repeated StreamRangeListSettingType StreamRangeListSettingList = 1;
+}
+
+message StreamValueListSettingList {
+	repeated StreamValueListSettingType StreamValueListSettingList = 1;
+}
+
+message KillBitListSettingList {
+	repeated KillBitListSettingType KillBitListSettingList = 1;
+}
+
+message StreamConfigurationList {
+	repeated StreamConfigurationType StreamConfigurationList = 1;
+}
+
+message StreamUpdateConfigurationList {
+	repeated StreamUpdateConfigurationType StreamUpdateConfigurationList = 1;
+}
+
+message StreamTableUdfDataTypeList {
+	repeated StreamTableUdfDataType StreamTableUdfDataTypeList = 1;
+}
+

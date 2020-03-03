@@ -1,0 +1,149 @@
+syntax = "proto3";
+
+
+package Feature;
+
+option go_package = "Feature";
+message AttributeType {
+	string value = 1 ;
+	string dependency = 2 ;
+}
+
+message FeatureType {
+	string name = 1 ;
+	AttributeList attribute = 2 ;
+}
+
+message FeatureGroupType {
+	string Scope = 1 ;
+	FeatureList Features = 2 ;
+}
+
+message ePortProcessorType {
+	enum Enum {
+		kPPC405 = 0 ;
+ 		kPPC750 = 1 ;
+ 		kSH4 = 2 ;
+ 		kWSX86 = 3 ;
+ 		kMIPS = 4 ;
+ 		kOCTEON = 5 ;
+ 		kX86_64 = 6 ;
+ 		kOCTEON2 = 7 ;
+ 		kUnknown = -1 ;
+ 	}
+}
+
+message ePortCapabilityValues {
+	enum Enum {
+		kControl = 0 ;
+ 		kData = 1 ;
+ 		kAdjustableFrameSize = 2 ;
+ 		kDynamicRateChange = 3 ;
+ 		kRegularPacketGroup = 4 ;
+ 		kWidePacketGroup = 5 ;
+ 		kDataCaptureCapable = 6 ;
+ 		kCopper = 7 ;
+ 		kFiber = 8 ;
+ 		kGenericEthernetMode = 9 ;
+ 		kTenGigLANMode = 10 ;
+ 		kTenGigWANMode = 11 ;
+ 		kATMMode = 12 ;
+ 		kPOSMode = 13 ;
+ 		kOC48POSMode = 14 ;
+ 		kOC192POSMode = 15 ;
+ 		kHalf10 = 16 ;
+ 		kFull10 = 17 ;
+ 		kHalf100 = 18 ;
+ 		kFull100 = 19 ;
+ 		kFull1000 = 20 ;
+ 		kCanSimulateLinkState = 21 ;
+ 		kReducedFeature = 22 ;
+ 		kSequenceNumberUdf = 23 ;
+ 		kOAM = 24 ;
+ 		kTxRxSyncStats = 25 ;
+ 		kDataCenterMode = 26 ;
+ 		kRTP = 27 ;
+ 		kTsoLro = 28 ;
+ 		kSelectablePcpuKernel = 29 ;
+ 		kClockModeCard = 30 ;
+ 		kIncrementFrameBurstOverride = 31 ;
+ 		kLasi = 32 ;
+ 		kModeL7 = 33 ;
+ 		kFortyGigLANMode = 34 ;
+ 		kHundredGigLANMode = 35 ;
+ 		kFloatingTimeStamp = 36 ;
+ 		kWanIFSStretch = 37 ;
+ 		kModeFCoEOffload = 38 ;
+ 		kTenGigabitLANMode = 39 ;
+ 		kFourtyGigabitLANMode = 40 ;
+ 		kOneGigabitMode = 41 ;
+ 		kTwoGigabitMode = 42 ;
+ 		kFourGigabitMode = 43 ;
+ 		kEightGigabitMode = 44 ;
+ 		kDynamicValuelist = 45 ;
+ 		kTLU = 46 ;
+ 		kSuspendResume = 47 ;
+ 		kRxLatencyBin = 48 ;
+ 		kVirtualPort = 49 ;
+ 		kPTP = 50 ;
+ 		kWidePacketGroupAlwaysEnabled = 51 ;
+ 		kFeaturePFCPauseResponseDelay = 52 ;
+ 		kMultiNicPerOS = 53 ;
+ 		kIxN2XMode = 54 ;
+ 		kIxiaCustomKernel = 55 ;
+ 		kKillbit = 56 ;
+ 		kDynamicBackgroundUpdate = 57 ;
+ 		kFeatureVlan0x9300 = 58 ;
+ 		kRxFiltersSupported = 59 ;
+ 		kRxPatternFilter1Supported = 60 ;
+ 		kRxPatternFilter2Supported = 61 ;
+ 		kRxPatternFilter3Supported = 62 ;
+ 		kRxPatternFilter4Supported = 63 ;
+ 		kRxPatternFilter5Supported = 64 ;
+ 		kRxPatternFilter6Supported = 65 ;
+ 		kRxPatternFilterPallettePatternFlexible = 66 ;
+ 		kRxPatternFilterPallettePatternOffsetFromIp = 67 ;
+ 		kRxPatternFilterPallettePatternOffsetFromProtocol = 68 ;
+ 		kRxPatternFilterPallettePatternOffsetFromSonet = 69 ;
+ 		kTxFrequencyDeviation = 70 ;
+ 		kPortClusters = 71 ;
+ 		kOneGEAggregate = 72 ;
+ 		kTenGEAggregate = 73 ;
+ 		kDataCenterFourPriority = 74 ;
+ 		kPacketLengthInsertion = 75 ;
+ 		kFortyGEAggregate = 76 ;
+ 		kTransmitExtendedTimestamp = 77 ;
+ 		kSetWhistlerAggregated = 78 ;
+ 		kSupportMKDualMode = 79 ;
+ 		kSupportFilterExpressionString = 80 ;
+ 		kSupportOtn = 81 ;
+ 		kSupportOtnAggregation = 82 ;
+ 		kSupportOtnOdu2Otu2 = 83 ;
+ 		kSupportOtnOdu2eOtu2e = 84 ;
+ 		kSupportOtnOdu3Otu3 = 85 ;
+ 		kSupportOtnOdu4Otu4 = 86 ;
+ 		kAdvancedStreamContBurst = 87 ;
+ 		kResourceGroupEx = 88 ;
+ 		kResourceGroupPPM = 89 ;
+ 		kSupportBPSMode = 90 ;
+ 		kSupportLineLoopback = 91 ;
+ 		kEmissionLoweringProtocol = 92 ;
+ 		kProcessorType = 93 ;
+ 		kPortKernelVersion = 94 ;
+ 		kPortPlatformVersion = 95 ;
+ 		kPortType = 96 ;
+ 	}
+}
+
+message AttributeList {
+	repeated AttributeType AttributeList = 1;
+}
+
+message FeatureList {
+	repeated FeatureType FeatureList = 1;
+}
+
+message FeatureGroupList {
+	repeated FeatureGroupType FeatureGroupList = 1;
+}
+

@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+
+package TableUdf;
+
+option go_package = "TableUdf";
+message ColId {
+	int32 id = 1 ;
+}
+
+message RowId {
+	int32 id = 1 ;
+}
+
+message ColumnSettingType {
+	ColId colId = 1 ;
+	int32 offset = 2 ;
+	int32 size = 3 ;
+}
+
+message ColumnDataType {
+	ColId colId = 1 ;
+	uint32 value = 2 ;
+}
+
+message RowDataType {
+	RowId rowId = 1 ;
+	ColumnDataType columns = 2 ;
+}
+
+message ColumnMVDataType {
+	ColId columnId = 1 ;
+	uint32 data = 2 ;
+}
+
+message TableUdfConfigurationType {
+	int32 rows = 1 ;
+	ColumnSettingList columns = 2 ;
+}
+
+message ColumnSettingList {
+	repeated ColumnSettingType ColumnSettingList = 1;
+}
+
+message RowDataList {
+	repeated RowDataType RowDataList = 1;
+}
+
+message ColumnMVDataList {
+	repeated ColumnMVDataType ColumnMVDataList = 1;
+}
+

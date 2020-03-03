@@ -1,0 +1,169 @@
+syntax = "proto3";
+
+import "IdType/IdType.proto";
+
+package MacSec;
+
+option go_package = "MacSec";
+message KeyConfigurationType {
+	IdType.KeyId keyId = 1 ;
+	uint32 keyValue = 2 ;
+}
+
+message MacSecStreamControlType {
+	IdType.StreamId streamId = 1 ;
+	bool enableMacSec = 2 ;
+	bool enableAuthentication = 3 ;
+	bool enableConfidentiality = 4 ;
+	bool enableBadAuthentication = 5 ;
+	IdType.SecureChannelId scId = 6 ;
+	bool enableHwAnCalculation = 7 ;
+}
+
+message TxKeyConfigurationType {
+	KeyConfigurationType keyConfig = 1 ;
+	uint32 currentPnValue = 2 ;
+}
+
+message TxScConfigurationType {
+	IdType.SecureChannelId saId = 1 ;
+	bool enableSci = 2 ;
+	eAesModeAlgorithm aesMode = 3 ;
+	int32 secTagOffset = 4 ;
+	int32 confidentialityOffset = 5 ;
+	bool enableShortLength = 6 ;
+	TxKeyConfigurationType key0 = 7 ;
+	TxKeyConfigurationType key1 = 8 ;
+	int64 initPn = 9 ;
+	int64 switchoverPointPn = 10 ;
+	int64 maxPn = 11 ;
+	bool enableDropExpiredPnPackets = 12 ;
+	bool enableContinuousPnPackets = 13 ;
+	int32 tci = 14 ;
+}
+
+message TxScControlConfigurationType {
+	int64 systemIdentifier = 1 ;
+	int32 portIdentifier = 2 ;
+	TxScConfigurationType scKeyControl = 3 ;
+}
+
+message MacSecTxConfigurationType {
+	int64 keyStatusDelay = 1 ;
+	TxScConfigurationList txSecureChannelConfigList = 2 ;
+}
+
+message RxScConfigurationType {
+	IdType.SecureChannelId saId = 1 ;
+	int32 pnWindowSize = 2 ;
+	int32 confidentialityOffset = 3 ;
+	int32 secTagOffset = 4 ;
+	eAesModeAlgorithm aesMode = 5 ;
+	bool enableShortLength = 6 ;
+	bool enableConfidentiality = 7 ;
+	bool enableAuthentication = 8 ;
+	KeyConfigurationType key0 = 9 ;
+	KeyConfigurationType key1 = 10 ;
+}
+
+message MacSecRxConfigurationType {
+	eMacSecTrafficType rxMacSecTrafficType = 1 ;
+	bool enableDark = 2 ;
+	int64 keyStatusDelay = 3 ;
+	RxScConfigurationList rxSecureChannelConfigList = 4 ;
+}
+
+message TxSaKeyConfigurationType {
+	IdType.SecureChannelId saId = 1 ;
+	bool enableKey0 = 2 ;
+	KeyConfigurationType key0 = 3 ;
+	bool enableKey1 = 4 ;
+	KeyConfigurationType key1 = 5 ;
+	bool toggleKey = 6 ;
+}
+
+message RxSaKeyConfigurationType {
+	IdType.SecureChannelId saId = 1 ;
+	bool enableKey0 = 2 ;
+	KeyConfigurationType key0 = 3 ;
+	bool enableKey1 = 4 ;
+	KeyConfigurationType key1 = 5 ;
+}
+
+message MacSecConfigurationType {
+	bool enableTxMacSec = 1 ;
+	MacSecTxConfigurationType txSaConfig = 2 ;
+	bool enableRxMacSec = 3 ;
+	MacSecRxConfigurationType rxSaConfig = 4 ;
+}
+
+message TxMacSecSaKeyStatusType {
+	IdType.SecureChannelId saId = 1 ;
+	eMacSecScKeyState key0Status = 2 ;
+	eMacSecScKeyState key1Status = 3 ;
+}
+
+message RxMacSecSaKeyStatusType {
+	IdType.SecureChannelId saId = 1 ;
+	eMacSecScKeyState key0Status = 2 ;
+	int64 lpn0 = 3 ;
+	eMacSecScKeyState key1Status = 4 ;
+	int64 lpn1 = 5 ;
+}
+
+message eAesModeAlgorithm {
+	enum Enum {
+		kGcm128 = 0 ;
+ 		kGcm256 = 1 ;
+ 		kXpn128 = 2 ;
+ 		kXpn256 = 3 ;
+ 	}
+}
+
+message eMacSecTrafficType {
+	enum Enum {
+		kIngress = 0 ;
+ 		kEgress = 1 ;
+ 	}
+}
+
+message eMacSecScKeyState {
+	enum Enum {
+		kExpired = 0 ;
+ 		kActive = 1 ;
+ 		kFresh = 2 ;
+ 	}
+}
+
+message MacSecStreamControlTypeList {
+	repeated MacSecStreamControlType MacSecStreamControlTypeList = 1;
+}
+
+message TxKeyConfigurationTypeList {
+	repeated TxKeyConfigurationType TxKeyConfigurationTypeList = 1;
+}
+
+message TxScConfigurationList {
+	repeated TxScControlConfigurationType TxScConfigurationList = 1;
+}
+
+message RxScConfigurationList {
+	repeated RxScConfigurationType RxScConfigurationList = 1;
+}
+
+message TxSaKeyConfigurationTypeList {
+	repeated TxSaKeyConfigurationType TxSaKeyConfigurationTypeList = 1;
+}
+
+message RxSaKeyConfigurationTypeList {
+	repeated RxSaKeyConfigurationType RxSaKeyConfigurationTypeList = 1;
+}
+
+message TxMacSecSaKeyStatusTypeList {
+	repeated TxMacSecSaKeyStatusType TxMacSecSaKeyStatusTypeList = 1;
+}
+
+message RxMacSecSaKeyStatusTypeList {
+	repeated RxMacSecSaKeyStatusType RxMacSecSaKeyStatusTypeList = 1;
+}
+

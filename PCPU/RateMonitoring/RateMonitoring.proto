@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+
+package RateMonitoring;
+
+option go_package = "RateMonitoring";
+message ConfigurationType {
+	bool enableJitterFilter = 1 ;
+	int32 filterWindow = 2 ;
+	int32 rateMonitoringThreshold = 3 ;
+	int32 fromPGID = 4 ;
+	int32 toPGID = 5 ;
+}
+
+message RateMonitoringList {
+	repeated ConfigurationType RateMonitoringList = 1;
+}
+

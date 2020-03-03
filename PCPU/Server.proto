@@ -1,0 +1,531 @@
+syntax = "proto3";
+
+import "PFType/PFType.proto";
+import "IdType/IdType.proto";
+import "google/protobuf/empty.proto";
+import "DebugTopology/DebugTopology.proto";
+import "Port/Port.proto";
+import "Capture/Capture.proto";
+import "PacketGroup/PacketGroup.proto";
+import "Stream/Stream.proto";
+import "MacSec/MacSec.proto";
+import "StatCatalog/StatCatalog.proto";
+
+package Server;
+
+option go_package = "Server";
+message SetTcpPortRequest {
+	int32 tcpPort = 1 ;
+}
+
+message InitRequestRequest {
+	PFType.VersionType RequestedVersion = 1 ;
+}
+
+message InitRequestResponse {
+	PFType.VersionType ProvidedVersion = 2 ;
+}
+
+message StartDebugSessionRequest {
+	string userName = 1 ;
+	DebugTopology.DebugPortInfoList PortListInfo = 2 ;
+}
+
+message StartDebugSessionResponse {
+	DebugTopology.DebugPortInfoWithUniqueIdList PortListInfoWithUniqueId = 3 ;
+	DebugTopology.InterceptorInfo InterceptorInfo = 4 ;
+}
+
+message StopDebugSessionRequest {
+	string userName = 1 ;
+	DebugTopology.DebugPortIdList PortIdList = 2 ;
+}
+
+message StopDebugSessionResponse {
+	DebugTopology.InterceptorInfo InterceptorInfo = 3 ;
+}
+
+message FeatureRequestRequest {
+	string Subtree = 1 ;
+}
+
+message FeatureRequestResponse {
+	string Features = 1 ;
+}
+
+message SetUserInfoRequest {
+	UserInfo user = 1 ;
+}
+
+message GetOwnerResponse {
+	OwnershipInfo info = 1 ;
+}
+
+message TakeOwnershipRequest {
+	bool Force = 1 ;
+}
+
+message ClearOwnershipRequest {
+	bool Force = 1 ;
+}
+
+message SubscribeEventRequest {
+	IdType.PortIdList PortIdList = 1 ;
+	EventSubscribeList Events = 2 ;
+}
+
+message UnsubscribeEventRequest {
+	IdType.PortIdList PortIdList = 1 ;
+	EventSubscribeList Events = 2 ;
+}
+
+message ConfigurePortRequest {
+	IdType.PortId PortId = 1 ;
+	Port.PortConfigurationType Configuration = 2 ;
+}
+
+message ConfigurePortBasicRequest {
+	IdType.PortId PortId = 1 ;
+	Port.PortConfigurationStreamsType Configuration = 2 ;
+}
+
+message PrepareForStartTxRequest {
+	IdType.PortId PortId = 1 ;
+	bool IsTransmitting = 2 ;
+}
+
+message ConfigureCaptureRequest {
+	IdType.PortId PortId = 1 ;
+	Capture.ConfigurationList CaptureConfigurationList = 2 ;
+}
+
+message StartCaptureRequest {
+	IdType.PortId PortId = 1 ;
+	Capture.eDirection Direction = 2 ;
+}
+
+message StopCaptureRequest {
+	IdType.PortId PortId = 1 ;
+	Capture.eDirection Direction = 2 ;
+}
+
+message GetCapturePacketCountRequest {
+	IdType.PortId PortId = 1 ;
+	Capture.eDirection Direction = 2 ;
+}
+
+message GetCapturePacketCountResponse {
+	Capture.PacketCountList PacketCountList = 3 ;
+}
+
+message GetCaptureStatusRequest {
+	IdType.PortId PortId = 1 ;
+	Capture.eDirection Direction = 2 ;
+}
+
+message GetCaptureStatusResponse {
+	Capture.StatusList StatusList = 3 ;
+}
+
+message RetrieveCaptureRequest {
+	IdType.PortId PortId = 1 ;
+	Capture.RetrieveOptionsType CaptureRetrieveOptions = 2 ;
+}
+
+message RetrieveCaptureResponse {
+	Capture.RecordType Record = 3 ;
+}
+
+message StartLatencyRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message StopLatencyRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message ClearLatencyRequest {
+	IdType.PortId PortId = 1 ;
+	bool enableTxRxSync = 2 ;
+}
+
+message ClearLatencyForSelectedPGIDsRequest {
+	IdType.PortId PortId = 1 ;
+	PacketGroup.PGIDRangeList PGIDRanges = 2 ;
+	bool enableTxRxSync = 3 ;
+}
+
+message ClearTimestampRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message SetRxLatencyRequest {
+	IdType.PortId PortId = 1 ;
+	Port.ReceiveConfigurationType RxLatencyConfig = 2 ;
+}
+
+message SetTxRxSyncIntervalRequest {
+	IdType.PortId PortId = 1 ;
+	Port.TxRxSyncIntervalConfigurationType TxRxSyncIntervalConfig = 2 ;
+}
+
+message ConfigurePCPUFiltersRequest {
+	IdType.PortId PortId = 1 ;
+	Port.PCPUFiltersConfigurationType PCPUFiltersConfig = 2 ;
+}
+
+message GetCurrentServerTimeResponse {
+	PFType.UTCTime Time = 1 ;
+}
+
+message GetNTPStateResponse {
+	eNTPState State = 1 ;
+}
+
+message setNTPMasterOnNTPClientRequest {
+	string NTPServer = 1 ;
+}
+
+message ArmPulseRequest {
+	IdType.PortId PortId = 1 ;
+	PulseActionList PulseActions = 2 ;
+}
+
+message UnlockPulseRequest {
+	ePulseGenerator Generate = 1 ;
+	PFType.UTCTime At = 2 ;
+}
+
+message GetTimedActionTimestampRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message GetTimedActionTimestampResponse {
+	int64 Value = 1 ;
+}
+
+message ScheduleTimedActionsRequest {
+	IdType.PortId PortId = 1 ;
+	TimedActionList ActionList = 2 ;
+}
+
+message ScheduleTimedActionsResponse {
+	bool Error = 1 ;
+	string ErrorMessage = 2 ;
+}
+
+message StartTxRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message StopTxRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message ConfigureStreamsRequest {
+	IdType.PortId PortId = 1 ;
+	Stream.TrafficConfigurationType StreamConfiguration = 2 ;
+}
+
+message ConfigureUpdateStreamsRequest {
+	IdType.PortId PortId = 1 ;
+	Stream.StreamUpdateConfigurationList StreamsConfiguration = 2 ;
+	bool IsAdjusting = 3 ;
+}
+
+message ConfigureUpdateStreamsResponse {
+	int64 Timestamp = 1 ;
+}
+
+message ConfigureStreamsDataBeginRequest {
+	IdType.PortId PortId = 1 ;
+	Stream.BackgroundDataConfigurationType BackgroundData = 2 ;
+	Stream.ValueListConfigurationType ValueList = 3 ;
+	Stream.RangeListConfigurationType RangeList = 4 ;
+	Stream.KillBitListConfigurationType KillBitList = 5 ;
+	Stream.StreamTableUdfDataTypeList TableUdf = 6 ;
+	bool IsComplete = 7 ;
+}
+
+message ConfigureStreamsDataWriteRequest {
+	IdType.PortId PortId = 1 ;
+	Stream.BackgroundDataConfigurationType BackgroundData = 2 ;
+	Stream.StreamTableUdfDataTypeList TableUdfData = 3 ;
+	Stream.KillBitListSettingList KillBitUdfData = 4 ;
+	Stream.StreamValueListSettingList ValueListUdfData = 5 ;
+	bool IsComplete = 6 ;
+}
+
+message RefreshValueListRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message RefreshValueListResponse {
+	Stream.StreamValueListSettingList ValueListUdfData = 2 ;
+}
+
+message ConfigureMacSecSaControlRequest {
+	IdType.PortId PortId = 1 ;
+	bool IsUpdate = 2 ;
+	MacSec.MacSecConfigurationType MacSecData = 3 ;
+}
+
+message UpdateMacSecStreamsRequest {
+	IdType.PortId PortId = 1 ;
+	bool IsUpdate = 2 ;
+	MacSec.MacSecStreamControlTypeList macSec = 3 ;
+}
+
+message ConfigureMacSecSaKeysRequest {
+	IdType.PortId PortId = 1 ;
+	bool isTxKeyExists = 2 ;
+	MacSec.TxSaKeyConfigurationTypeList txSaAndKeyList = 3 ;
+	bool isRxKeyExists = 4 ;
+	MacSec.RxSaKeyConfigurationTypeList rxSaAndKeyList = 5 ;
+}
+
+message ToggleMacSecSaKeysRequest {
+	IdType.PortId PortId = 1 ;
+	bool IsTx = 2 ;
+	MacSecSaList saList = 3 ;
+}
+
+message GetMacSecSaKeyStatusRequest {
+	IdType.PortId PortId = 1 ;
+	bool getTxKeyStatus = 2 ;
+	MacSecSaList txSaList = 3 ;
+}
+
+message GetMacSecSaKeyStatusResponse {
+	MacSec.TxMacSecSaKeyStatusTypeList txMacSecSaKeyStatusList = 4 ;
+	bool getRxKeyStatus = 5 ;
+	MacSecSaList rxSaList = 6 ;
+	MacSec.RxMacSecSaKeyStatusTypeList rxMacSecSaKeyStatusList = 7 ;
+}
+
+message GetStatCatalogRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message GetStatCatalogResponse {
+	StatCatalog.StHtgCatalogItem CatalogItem = 2 ;
+}
+
+message ClearStatsRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message ClearPerStreamTxStatsRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message VMAcquireRequest {
+	IdType.SlotId SlotId = 1 ;
+	string ManagementIp = 2 ;
+}
+
+message VMAddPortRequest {
+	VMPortInfo VMPortInfo = 1 ;
+}
+
+message VMRemovePortRequest {
+	IdType.PortId PortId = 1 ;
+}
+
+message UserInfo {
+	string owner = 1 ;
+	string description = 2 ;
+}
+
+message OwnershipInfo {
+	string owner = 1 ;
+	string description = 2 ;
+	PFType.MilliSecondsType duration = 3 ;
+}
+
+message EventInfo {
+	eEvent eventKind = 1 ;
+	string oldValue = 2 ;
+	string newValue = 3 ;
+	IdType.PortId portId = 4 ;
+}
+
+message TimedAction {
+	eTimedAction action = 1 ;
+	int64 when = 2 ;
+}
+
+message VMPortInfo {
+	IdType.PortId id = 1 ;
+	string name = 2 ;
+	string macAddress = 3 ;
+	string ipAddress = 4 ;
+	int32 mtu = 5 ;
+	bool isPromiscuous = 6 ;
+}
+
+message eEvent {
+	enum Enum {
+		Dummy = 0 ;
+		kOwnership = 1 ;
+ 		kLink = 2 ;
+ 		kCPUStatus = 3 ;
+ 		kCapture = 4 ;
+ 		kTransmit = 5 ;
+ 		kStreamRate = 6 ;
+ 		kLineSpeed = 7 ;
+ 	}
+}
+
+message LinkValues {
+	enum Enum {
+		Down = 0 ;
+ 		Up = 1 ;
+ 		Loopback = 2 ;
+ 		ForceLinkUp = 34 ;
+ 	}
+}
+
+message TransmitValues {
+	enum Enum {
+		None = 0 ;
+ 		Transmitting = 1 ;
+ 	}
+}
+
+message CaptureValues {
+	enum Enum {
+		None = 0 ;
+ 		Capture = 1 ;
+ 	}
+}
+
+message CPUStatusValues {
+	enum Enum {
+		Down = 0 ;
+ 		Ready = 2 ;
+ 	}
+}
+
+message eNTPState {
+	enum Enum {
+		kNotRunning = 0 ;
+ 		kRunningNotTrusted = 1 ;
+ 		kRunningTrusted = 2 ;
+ 	}
+}
+
+message ePulseAction {
+	enum Enum {
+		kStartTx = 0 ;
+ 		kStopTx = 1 ;
+ 		kFreeze = 3 ;
+ 		kStartCapture = 4 ;
+ 		kStopCapture = 5 ;
+ 		kPauseTx = 6 ;
+ 		kResumeTx = 7 ;
+ 		kClearTimestamp = 8 ;
+ 		kStartSyncStats = 14 ;
+ 		kStopSyncStats = 15 ;
+ 	}
+}
+
+message ePulseGenerator {
+	enum Enum {
+		kNoPulse = 0 ;
+ 		kPulse = 1 ;
+ 	}
+}
+
+message eTimedAction {
+	enum Enum {
+		kStartTx = 0 ;
+ 		kStopTx = 1 ;
+ 		kStartSyncStats = 2 ;
+ 		kStopSyncStats = 3 ;
+ 		kStartRxCapture = 4 ;
+ 		kStopRxCapture = 5 ;
+ 		kStartTxCapture = 6 ;
+ 		kStopTxCapture = 7 ;
+ 	}
+}
+
+message EventSubscribeList {
+	repeated eEvent EventSubscribeList = 1;
+}
+
+message EventNotificationList {
+	repeated EventInfo EventNotificationList = 1;
+}
+
+message PulseActionList {
+	repeated ePulseAction PulseActionList = 1;
+}
+
+message TimedActionList {
+	repeated TimedAction TimedActionList = 1;
+}
+
+message MacSecSaList {
+	repeated IdType.SecureChannelId MacSecSaList = 1;
+}
+
+service Server {
+	rpc SetTcpPort ( SetTcpPortRequest ) returns ( google.protobuf.Empty ) { }
+	rpc InitRequest ( InitRequestRequest ) returns (InitRequestResponse ) { }
+	rpc Restart (  google.protobuf.Empty ) returns ( google.protobuf.Empty ) { }
+	rpc StartDebugSession ( StartDebugSessionRequest ) returns (StartDebugSessionResponse ) { }
+	rpc StopDebugSession ( StopDebugSessionRequest ) returns (StopDebugSessionResponse ) { }
+	rpc FeatureRequest ( FeatureRequestRequest ) returns (FeatureRequestResponse ) { }
+	rpc SetUserInfo ( SetUserInfoRequest ) returns ( google.protobuf.Empty ) { }
+	rpc GetOwner (  google.protobuf.Empty ) returns (GetOwnerResponse ) { }
+	rpc TakeOwnership ( TakeOwnershipRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ClearOwnership ( ClearOwnershipRequest ) returns ( google.protobuf.Empty ) { }
+	rpc SubscribeEvent ( SubscribeEventRequest ) returns ( google.protobuf.Empty ) { }
+	rpc UnsubscribeEvent ( UnsubscribeEventRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ConfigurePort ( ConfigurePortRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ConfigurePortBasic ( ConfigurePortBasicRequest ) returns ( google.protobuf.Empty ) { }
+	rpc PrepareForStartTx ( PrepareForStartTxRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ConfigureCapture ( ConfigureCaptureRequest ) returns ( google.protobuf.Empty ) { }
+	rpc StartCapture ( StartCaptureRequest ) returns ( google.protobuf.Empty ) { }
+	rpc StopCapture ( StopCaptureRequest ) returns ( google.protobuf.Empty ) { }
+	rpc GetCapturePacketCount ( GetCapturePacketCountRequest ) returns (GetCapturePacketCountResponse ) { }
+	rpc GetCaptureStatus ( GetCaptureStatusRequest ) returns (GetCaptureStatusResponse ) { }
+	rpc RetrieveCapture ( RetrieveCaptureRequest ) returns (RetrieveCaptureResponse ) { }
+	rpc StartLatency ( StartLatencyRequest ) returns ( google.protobuf.Empty ) { }
+	rpc StopLatency ( StopLatencyRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ClearLatency ( ClearLatencyRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ClearLatencyForSelectedPGIDs ( ClearLatencyForSelectedPGIDsRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ClearTimestamp ( ClearTimestampRequest ) returns ( google.protobuf.Empty ) { }
+	rpc SetRxLatency ( SetRxLatencyRequest ) returns ( google.protobuf.Empty ) { }
+	rpc SetTxRxSyncInterval ( SetTxRxSyncIntervalRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ConfigurePCPUFilters ( ConfigurePCPUFiltersRequest ) returns ( google.protobuf.Empty ) { }
+	rpc GetCurrentServerTime (  google.protobuf.Empty ) returns (GetCurrentServerTimeResponse ) { }
+	rpc GetNTPState (  google.protobuf.Empty ) returns (GetNTPStateResponse ) { }
+	rpc setNTPMasterOnNTPClient ( setNTPMasterOnNTPClientRequest ) returns ( google.protobuf.Empty ) { }
+	rpc SetNTPMasterAsSelf (  google.protobuf.Empty ) returns ( google.protobuf.Empty ) { }
+	rpc LockPulse (  google.protobuf.Empty ) returns ( google.protobuf.Empty ) { }
+	rpc ArmPulse ( ArmPulseRequest ) returns ( google.protobuf.Empty ) { }
+	rpc UnlockPulse ( UnlockPulseRequest ) returns ( google.protobuf.Empty ) { }
+	rpc GetTimedActionTimestamp ( GetTimedActionTimestampRequest ) returns (GetTimedActionTimestampResponse ) { }
+	rpc ScheduleTimedActions ( ScheduleTimedActionsRequest ) returns (ScheduleTimedActionsResponse ) { }
+	rpc StartTx ( StartTxRequest ) returns ( google.protobuf.Empty ) { }
+	rpc StopTx ( StopTxRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ConfigureStreams ( ConfigureStreamsRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ConfigureUpdateStreams ( ConfigureUpdateStreamsRequest ) returns (ConfigureUpdateStreamsResponse ) { }
+	rpc ConfigureStreamsDataBegin ( ConfigureStreamsDataBeginRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ConfigureStreamsDataWrite ( ConfigureStreamsDataWriteRequest ) returns ( google.protobuf.Empty ) { }
+	rpc RefreshValueList ( RefreshValueListRequest ) returns (RefreshValueListResponse ) { }
+	rpc ConfigureMacSecSaControl ( ConfigureMacSecSaControlRequest ) returns ( google.protobuf.Empty ) { }
+	rpc UpdateMacSecStreams ( UpdateMacSecStreamsRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ConfigureMacSecSaKeys ( ConfigureMacSecSaKeysRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ToggleMacSecSaKeys ( ToggleMacSecSaKeysRequest ) returns ( google.protobuf.Empty ) { }
+	rpc GetMacSecSaKeyStatus ( GetMacSecSaKeyStatusRequest ) returns (GetMacSecSaKeyStatusResponse ) { }
+	rpc GetStatCatalog ( GetStatCatalogRequest ) returns (GetStatCatalogResponse ) { }
+	rpc ClearStats ( ClearStatsRequest ) returns ( google.protobuf.Empty ) { }
+	rpc ClearPerStreamTxStats ( ClearPerStreamTxStatsRequest ) returns ( google.protobuf.Empty ) { }
+	rpc VMAcquire ( VMAcquireRequest ) returns ( google.protobuf.Empty ) { }
+	rpc VMAddPort ( VMAddPortRequest ) returns ( google.protobuf.Empty ) { }
+	rpc VMRemovePort ( VMRemovePortRequest ) returns ( google.protobuf.Empty ) { }
+	rpc VMRelease (  google.protobuf.Empty ) returns ( google.protobuf.Empty ) { }
+}

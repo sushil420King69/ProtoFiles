@@ -1,0 +1,287 @@
+syntax = "proto3";
+
+import "PFType/PFType.proto";
+import "IdType/IdType.proto";
+
+package Capture;
+
+option go_package = "Capture";
+message QoSPatternType {
+	int32 qosByteOffset = 1 ;
+	eAnchor anchor = 2 ;
+	int32 offset = 3 ;
+	uint32 pattern = 4 ;
+	uint32 select = 5 ;
+}
+
+message DataPatternType {
+	eAnchor anchor = 1 ;
+	int32 offset = 2 ;
+	uint32 pattern = 3 ;
+	uint32 select = 4 ;
+}
+
+message MacPatternType {
+	PFType.MacAddressType address = 1 ;
+	PFType.MacAddressType select = 2 ;
+}
+
+message PatternType {
+	IdType.CapturePatternId patternId = 1 ;
+	ePatternKind patternKind = 2 ;
+	MacPatternType srcAddrPattern = 3 ;
+	MacPatternType dstAddrPattern = 4 ;
+	DataPatternType dataPattern = 5 ;
+	QoSPatternType qosPattern = 6 ;
+}
+
+message FrameSizeRangeType {
+	bool isEnabled = 1 ;
+	bool isInRange = 2 ;
+	int32 from = 3 ;
+	int32 to = 4 ;
+}
+
+message ExpressionElementType {
+	eExpressionElementKind elementKind = 1 ;
+	eLogic operatorLogic = 2 ;
+	IdType.CapturePatternId patternId = 3 ;
+}
+
+message ExpressionType {
+	eExpressionKind expressionKind = 1 ;
+	eErrorMatch errorMatch = 2 ;
+	FrameSizeRangeType frameSizeRange = 3 ;
+	eCircuitList sonetCircuitList = 4 ;
+	ExpressionContent filterContent = 5 ;
+	bool isExpressionEnabled = 6 ;
+	ExpressionContent filterExpressionContent = 7 ;
+	eFilterExpressionParserType expressionParserType = 8 ;
+}
+
+message SettingsType {
+	eCaptureMode captureMode = 1 ;
+	eAfterTriggerFilter afterTriggerFilter = 2 ;
+	eBeforeTriggerFilter beforeTriggerFilter = 3 ;
+	eContinuousFilter continuousFilter = 4 ;
+	int32 sliceSize = 5 ;
+	PFType.KBType triggerPosition = 6 ;
+}
+
+message ConfigurationType {
+	eDirection direction = 1 ;
+	SettingsType settings = 2 ;
+	PatternList patterns = 3 ;
+	ExpressionList expressions = 4 ;
+	eRXSharedStats rxsharedstat1 = 5 ;
+	eRXSharedStats rxsharedstat2 = 6 ;
+}
+
+message EventType {
+	IdType.PortId portId = 1 ;
+	eCaptureState state = 2 ;
+	int32 captureRecords = 3 ;
+}
+
+message StatusType {
+	eDirection direction = 1 ;
+	bool isWrapped = 2 ;
+	bool isFull = 3 ;
+	bool pktsAvailable = 4 ;
+	int32 totalPkts = 5 ;
+	int64 totalBytes = 6 ;
+	int32 triggerIndex = 7 ;
+	eCaptureState state = 8 ;
+}
+
+message PacketCountType {
+	eDirection direction = 1 ;
+	int32 totalPkts = 2 ;
+}
+
+message RecordType {
+	int32 count = 1 ;
+	uint32 buffer = 2 ;
+}
+
+message RetrieveOptionsType {
+	int32 startIndex = 1 ;
+	int32 numPackets = 2 ;
+	eDirection direction = 3 ;
+	ePacketFormat format = 4 ;
+	eTimestampPrecision precision = 5 ;
+}
+
+message eDirection {
+	enum Enum {
+		kRx = 0 ;
+ 		kTx = 1 ;
+ 		kBidirectional = 2 ;
+ 	}
+}
+
+message ePacketFormat {
+	enum Enum {
+		kRaw = 0 ;
+ 		kPcap = 1 ;
+ 	}
+}
+
+message eTimestampPrecision {
+	enum Enum {
+		kMicroSec = 0 ;
+ 		kNanoSec = 1 ;
+ 	}
+}
+
+message ePatternKind {
+	enum Enum {
+		kSrcAddrPattern = 0 ;
+ 		kDstAddrPattern = 1 ;
+ 		kDataPattern = 2 ;
+ 		kQoSPattern = 3 ;
+ 	}
+}
+
+message eExpressionKind {
+	enum Enum {
+		kUds = 0 ;
+ 		kTrigger = 1 ;
+ 		kFilter = 2 ;
+ 	}
+}
+
+message eAfterTriggerFilter {
+	enum Enum {
+		kCaptureAll = 0 ;
+ 		kUseTriggerFilter = 1 ;
+ 		kUseCaptureFilter = 2 ;
+ 	}
+}
+
+message eBeforeTriggerFilter {
+	enum Enum {
+		kCaptureAll = 0 ;
+ 		kCaptureNone = 1 ;
+ 		kUseCaptureFilter = 2 ;
+ 	}
+}
+
+message eContinuousFilter {
+	enum Enum {
+		kCaptureAll = 0 ;
+ 		kUseCaptureFilter = 1 ;
+ 	}
+}
+
+message eCaptureMode {
+	enum Enum {
+		kContinuousMode = 0 ;
+ 		kTriggerMode = 1 ;
+ 	}
+}
+
+message eCaptureState {
+	enum Enum {
+		kCaptureStopped = 0 ;
+ 		kCaptureStarted = 1 ;
+ 	}
+}
+
+message eAnchor {
+	enum Enum {
+		kStartOfFrame = 0 ;
+ 		kStartOfIP = 1 ;
+ 		kStartOfProtocol = 2 ;
+ 	}
+}
+
+message eLogic {
+	enum Enum {
+		kNotPattern = 0 ;
+ 		kAndPattern = 1 ;
+ 		kOrPattern = 2 ;
+ 		kXorPattern = 3 ;
+ 		kNandPattern = 4 ;
+ 		kNorPattern = 5 ;
+ 	}
+}
+
+message eErrorMatch {
+	enum Enum {
+		kAnyFrame = 0 ;
+ 		kErrGoodFrame = 1 ;
+ 		kErrBadCRC = 2 ;
+ 		kErrBadFrame = 3 ;
+ 		kErrAnySequenceError = 4 ;
+ 		kErrSmallSequenceError = 5 ;
+ 		kErrBigSequenceError = 6 ;
+ 		kErrReverseSequenceError = 7 ;
+ 		kErrDataIntegrityError = 8 ;
+ 		kErrAnyIpTcpUdpChecksumError = 9 ;
+ 		kErrReverseDuplicatePacket = 10 ;
+ 		kErrSequenceGap = 11 ;
+ 		kErrCdlErrors = 12 ;
+ 		kErrFCoEInvalidFrame = 13 ;
+ 	}
+}
+
+message eCircuitList {
+	enum Enum {
+		kAnyCircuit = 0 ;
+ 		kCircuitList = 1 ;
+ 	}
+}
+
+message eExpressionElementKind {
+	enum Enum {
+		kOperator = 0 ;
+ 		kPattern = 1 ;
+ 	}
+}
+
+message eFilterExpressionParserType {
+	enum Enum {
+		kSimpleExpressionParser = 0 ;
+ 		kComplexExpressionParser = 1 ;
+ 		kTokaidoExpressionParser = 2 ;
+ 	}
+}
+
+message eRXSharedStats {
+	enum Enum {
+		kInvalidDelimiter = 0 ;
+ 		kInvalidFrames = 1 ;
+ 		kInvalidSize = 2 ;
+ 		kNormalSizeBadFCCRC = 3 ;
+ 		kNormalSizeGoodFCCRC = 4 ;
+ 		kUndersizeBadFCCRC = 5 ;
+ 		kUndersizeGoodFCCRC = 6 ;
+ 		kValidFrames = 7 ;
+ 	}
+}
+
+message PatternList {
+	repeated PatternType PatternList = 1;
+}
+
+message ExpressionContent {
+	repeated ExpressionElementType ExpressionContent = 1;
+}
+
+message ExpressionList {
+	repeated ExpressionType ExpressionList = 1;
+}
+
+message ConfigurationList {
+	repeated ConfigurationType ConfigurationList = 1;
+}
+
+message StatusList {
+	repeated StatusType StatusList = 1;
+}
+
+message PacketCountList {
+	repeated PacketCountType PacketCountList = 1;
+}
+

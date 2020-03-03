@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+
+package DebugTopology;
+
+option go_package = "DebugTopology";
+message DebugPortTopologyInfo {
+	string chassisNameOrIP = 1 ;
+	int32 card = 2 ;
+	int32 port = 3 ;
+	string portType = 4 ;
+	string managementIP = 5 ;
+	bool isVirtualPort = 6 ;
+	int32 portIndex = 7 ;
+}
+
+message DebugPortConnectionInfo {
+	string targetAddress = 1 ;
+	int32 targetPort = 2 ;
+	string proxyAddress = 3 ;
+	int32 proxyPort = 4 ;
+}
+
+message DebugPortInfo {
+	DebugPortTopologyInfo topology = 1 ;
+	DebugPortConnectionInfo connection = 2 ;
+}
+
+message DebugPortInfoWithUniqueId {
+	int32 uniquePortId = 1 ;
+	DebugPortInfo portInfo = 2 ;
+}
+
+message InterceptorInfo {
+	eInterceptorRunningMode interceptorRunningMode = 1 ;
+	string interceptorUserName = 2 ;
+}
+
+message eInterceptorRunningMode {
+	enum Enum {
+		kLiveDebuggingOnIxNClient = 0 ;
+ 		kOffClientDebugWithIxN = 1 ;
+ 		kOfflineDebugWithCHM = 2 ;
+ 	}
+}
+
+message DebugPortInfoList {
+	repeated DebugPortInfo DebugPortInfoList = 1;
+}
+
+message DebugPortInfoWithUniqueIdList {
+	repeated DebugPortInfoWithUniqueId DebugPortInfoWithUniqueIdList = 1;
+}
+
+message DebugPortIdList {
+	repeated int32 DebugPortIdList = 1;
+}
+
